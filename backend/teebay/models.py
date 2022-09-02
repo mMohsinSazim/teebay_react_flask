@@ -1,8 +1,8 @@
-from logging import NullHandler
 from teebay import db
 
 class User(db.Model):
     id = db.Column(db.Integer,primary_key = True)
+    public_id = db.Column(db.String(500),nullable=False)
     first_name = db.Column(db.String(50),nullable=False)
     last_name = db.Column(db.String(50),nullable=False)
     address = db.Column(db.String(500))
@@ -13,4 +13,6 @@ class User(db.Model):
 
     def __repr__(self):
         return f'{self.email}'
+
+
     
