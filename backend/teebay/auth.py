@@ -4,9 +4,28 @@ from werkzeug.security import generate_password_hash,check_password_hash
 import uuid
 import jwt
 import datetime
+from functools import wraps
 
 auth = Blueprint("auth",__name__)
 from .models import User
+
+def token_required(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        token = None
+        if "Bearer" in request.headers:
+            token = request.headers['Bearer']
+        if not token:
+            return jsonify({"error":"User is unauthorized"})
+        try:
+            data = jwt.decode(token,app.config['SECRET_KEY'],algorithms=["HS256"])
+            login_user = User.query.filter_by(public_id=data['public_id']).first()
+            if not login_user:
+                return jsonify({"error":"No User Found"})
+        except Exception as e:
+            return jsonify({"error":str(e)})
+        return f(login_user,*args, **kwargs)
+    return decorator
 
 
 @auth.route("/sign-up",methods=["POST"])
