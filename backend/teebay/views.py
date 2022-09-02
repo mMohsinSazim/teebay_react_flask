@@ -1,5 +1,5 @@
 from flask import Blueprint,jsonify
-from .auth import token_required
+from .auth import tokenRequired
 views = Blueprint("views",__name__)
 
 @views.route("/")
