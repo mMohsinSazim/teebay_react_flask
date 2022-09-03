@@ -32,6 +32,10 @@ def tokenRequired(f):
 def signUp():
     data = request.get_json()
     print("DATA------",data)
+    user = User.query.filter_by(email=data["email"]).first()
+    print("USER______",user)
+    if user:
+        return jsonify({"message":"User with that email already exists"})
     try:
         hash_password = generate_password_hash(data['password'],method="sha256")
         user = User(firstName=data['firstName'],lastName=data['lastName'],address=data['address'],email=data['email'],phoneNumber=data['phoneNumber'],password=hash_password,publicId=str(uuid.uuid4()))
