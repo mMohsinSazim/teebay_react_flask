@@ -39,12 +39,21 @@ def getAddProduct(loginUser,*args,**kwargs):
         allProducts.append(singleProduct)
     return jsonify({"data":allProducts})
 
-@views.route("/product/<int:productId>",methods=["DELETE","PUT"])
+@views.route("/product/<int:productId>",methods=["DELETE","PUT","GET"])
 @tokenRequired
-def updateDeleteProduct(loginUser,productId,*args,**kwargs,):
+def getUpdateDeleteProduct(loginUser,productId,*args,**kwargs,):
     product = Product.query.filter_by(userId=loginUser.id,id=productId).first()
     if not product:
         return jsonify({"message":"Unauthorized user"})
+    if request.method == "GET":
+        singleProduct = {}
+        singleProduct['title'] = product.title
+        singleProduct['categories'] = product.categories
+        singleProduct['description'] = product.description
+        singleProduct['price'] = product.price
+        singleProduct['rentPrice'] = product.rentPrice
+        singleProduct['rentType'] = product.rentType
+        return jsonify({"data":singleProduct})
     if request.method == "PUT":
         data = request.get_json()
         product.title = data['title']
