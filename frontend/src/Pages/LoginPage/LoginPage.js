@@ -1,6 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Form from "../../Shared/Componenets/Form";
+import { FormButton } from "../../Shared/Componenets/Button";
+import { Link } from "react-router-dom";
 const LoginPage = () => {
   const [userInfo, setUserInfo] = useState({ email: "", password: "" });
   const handleSubmit = async (e) => {
@@ -14,7 +17,7 @@ const LoginPage = () => {
   };
   return (
     <div>
-      <form>
+      <Form>
         <h3>Sign In</h3>
         <div>
           <label htmlFor="email">Email:</label>
@@ -40,10 +43,13 @@ const LoginPage = () => {
             }
           />
         </div>
-        <button type="submit" onClick={handleSubmit}>
+        <FormButton type="submit" onClick={handleSubmit}>
           Login
-        </button>
-      </form>
+        </FormButton>
+        <p>
+          Don't have an account? <Link to="/sign-up">Sign Up</Link>{" "}
+        </p>
+      </Form>
     </div>
   );
 };

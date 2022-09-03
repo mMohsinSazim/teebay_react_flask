@@ -1,6 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Form from "../../Shared/Componenets/Form";
+import { FormButton } from "../../Shared/Componenets/Button";
+import { Link } from "react-router-dom";
 const SignUpPage = () => {
   const [userInfo, setUserInfo] = useState({
     firstName: "",
@@ -43,7 +46,7 @@ const SignUpPage = () => {
   };
   return (
     <div>
-      <form>
+      <Form>
         <h3>Sign Up</h3>
         <div>
           <label htmlFor="first_name">First Name:</label>
@@ -125,10 +128,13 @@ const SignUpPage = () => {
             required
           />
         </div>
-        <button type="submit" onClick={handleSubmit}>
+        <FormButton type="submit" onClick={handleSubmit}>
           Sign Up
-        </button>
-      </form>
+        </FormButton>
+        <p>
+          Already have an account? <Link to="/login">Sign In</Link>{" "}
+        </p>
+      </Form>
     </div>
   );
 };
