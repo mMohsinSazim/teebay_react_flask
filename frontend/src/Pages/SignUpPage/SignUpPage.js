@@ -3,10 +3,16 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Form from "../../Shared/Componenets/Form";
 import { FormButton } from "../../Shared/Componenets/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  setErrorStatus,
+  setUserInfoOnStore,
+} from "../../Features/User/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 const SignUpPage = () => {
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
+  const { isError, errorMessage } = useSelector((store) => store.user);
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
@@ -28,13 +34,50 @@ const SignUpPage = () => {
       phoneNumber,
     } = userInfo;
     if (firstName.trim() == "" && lastName.trim() == "") {
-      setIsError(true);
-      setErrorMessage("Please insert your first name or last name");
+      dispatch(
+        setErrorStatus({
+          type: true,
+          msg: "Please insert your first name or last name",
+        })
+      );
+      setTimeout(() => {
+        dispatch(
+          setErrorStatus({
+            type: false,
+            msg: null,
+          })
+        );
+      }, 2000);
+      return;
+    }
+    if (
+      email.trim() == "" ||
+      password1.trim() == "" ||
+      password2.trim() == ""
+    ) {
+      dispatch(
+        setErrorStatus({ type: true, msg: "Provide email and Password" })
+      );
+      setTimeout(() => {
+        dispatch(setErrorStatus({ type: false, msg: null }));
+      }, 2000);
       return;
     }
     if (password1 !== password2) {
-      setIsError(true);
-      setErrorMessage("Passwords do not match.");
+      dispatch(
+        setErrorStatus({
+          type: true,
+          msg: "Passwords do not match.",
+        })
+      );
+      setTimeout(() => {
+        dispatch(
+          setErrorStatus({
+            type: false,
+            msg: null,
+          })
+        );
+      }, 2000);
       return;
     }
     const data = {
@@ -46,7 +89,20 @@ const SignUpPage = () => {
       password: password2,
     };
     const signUpUser = await axios.post("/api/user/sign-up", data);
-    console.log(signUpUser);
+    if (signUpUser.data.message !== "User was created") {
+      dispatch(
+        setErrorStatus({ type: true, msg: `${signUpUser.data.message}` })
+      );
+      setTimeout(() => {
+        dispatch(setErrorStatus({ type: false, msg: null }));
+      }, 2000);
+      return;
+    } else {
+      const registeredUser = { email: data.email, password: data.password };
+      const loginUser = await axios.post("/api/user/login", registeredUser);
+      dispatch(setUserInfoOnStore(loginUser.data));
+      navigate("/");
+    }
   };
   return (
     <div>
@@ -84,7 +140,6 @@ const SignUpPage = () => {
             onChange={(e) =>
               setUserInfo({ ...userInfo, email: e.target.value })
             }
-            required
           />
         </div>
         <div>
@@ -118,7 +173,6 @@ const SignUpPage = () => {
             onChange={(e) =>
               setUserInfo({ ...userInfo, password1: e.target.value })
             }
-            required
           />
         </div>
         <div>
@@ -130,7 +184,6 @@ const SignUpPage = () => {
             onChange={(e) =>
               setUserInfo({ ...userInfo, password2: e.target.value })
             }
-            required
           />
         </div>
         <FormButton type="submit" onClick={handleSubmit}>

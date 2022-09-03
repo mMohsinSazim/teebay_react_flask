@@ -5,8 +5,7 @@ import { logoutUser } from "../../Features/User/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 const Navbar = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
-  console.log(user);
+  const { isLoggedIn } = useSelector((state) => state.user);
   return (
     <Wrapper>
       <NavLink
@@ -17,23 +16,27 @@ const Navbar = () => {
       >
         Home
       </NavLink>
-      <NavLink
-        to="sign-up"
-        style={({ isActive }) => {
-          return { color: isActive ? "white" : "grey" };
-        }}
-      >
-        Sign Up
-      </NavLink>
-      <NavLink
-        to="login"
-        style={({ isActive }) => {
-          return { color: isActive ? "white" : "grey" };
-        }}
-      >
-        Login
-      </NavLink>
-      {user?.email && (
+      {!isLoggedIn && (
+        <>
+          <NavLink
+            to="sign-up"
+            style={({ isActive }) => {
+              return { color: isActive ? "white" : "grey" };
+            }}
+          >
+            Sign Up
+          </NavLink>
+          <NavLink
+            to="login"
+            style={({ isActive }) => {
+              return { color: isActive ? "white" : "grey" };
+            }}
+          >
+            Login
+          </NavLink>
+        </>
+      )}
+      {isLoggedIn && (
         <Link
           to="/"
           onClick={() => {

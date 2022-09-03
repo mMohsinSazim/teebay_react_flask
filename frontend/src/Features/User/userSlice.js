@@ -17,10 +17,12 @@ const userSlice = createSlice({
       state.errorMessage = msg;
     },
     setUserInfoOnStore: (state, action) => {
+      state.isLoggedIn = true;
       state.user = action.payload;
       localStorage.setItem("user", JSON.stringify(state.user));
     },
     logoutUser: (state) => {
+      state.isLoggedIn = false;
       state.user = {};
       localStorage.removeItem("user");
     },
