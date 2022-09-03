@@ -4,21 +4,44 @@ import axios from "axios";
 import Form from "../../Shared/Componenets/Form";
 import { FormButton } from "../../Shared/Componenets/Button";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  setErrorStatus,
+  setUserInfoOnStore,
+} from "../../Features/User/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isError, errorMessage } = useSelector((state) => state.user);
   const [userInfo, setUserInfo] = useState({ email: "", password: "" });
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (userInfo.email.trim() == "" || userInfo.password.trim() == "") {
-      console.log("Email or Password is Empty");
+      dispatch(
+        setErrorStatus({ type: true, msg: "Provide email and password" })
+      );
+      setTimeout(() => {
+        dispatch(setErrorStatus({ type: false, msg: null }));
+      }, 2000);
       return;
     }
     const loginUser = await axios.post("/api/user/login", userInfo);
-    console.log(loginUser);
+    if (!loginUser.data.token) {
+      dispatch(setErrorStatus({ type: true, msg: "No user exists" }));
+      setTimeout(() => {
+        dispatch(setErrorStatus({ type: false, msg: null }));
+      }, 2000);
+      return;
+    }
+    dispatch(setUserInfoOnStore(loginUser.data));
+    navigate("/");
   };
   return (
     <div>
       <Form>
         <h3>Sign In</h3>
+        {isError && <p className="form-error-msg">{errorMessage}</p>}
         <div>
           <label htmlFor="email">Email:</label>
           <input

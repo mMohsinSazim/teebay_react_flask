@@ -5,6 +5,8 @@ import Form from "../../Shared/Componenets/Form";
 import { FormButton } from "../../Shared/Componenets/Button";
 import { Link } from "react-router-dom";
 const SignUpPage = () => {
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [userInfo, setUserInfo] = useState({
     firstName: "",
     lastName: "",
@@ -26,11 +28,13 @@ const SignUpPage = () => {
       phoneNumber,
     } = userInfo;
     if (firstName.trim() == "" && lastName.trim() == "") {
-      console.log("Please insert your first name or last name");
+      setIsError(true);
+      setErrorMessage("Please insert your first name or last name");
       return;
     }
     if (password1 !== password2) {
-      console.log("Please check if passwords are ok or not");
+      setIsError(true);
+      setErrorMessage("Passwords do not match.");
       return;
     }
     const data = {
@@ -48,6 +52,7 @@ const SignUpPage = () => {
     <div>
       <Form>
         <h3>Sign Up</h3>
+        {isError && <p className="form-error-msg">{errorMessage}</p>}
         <div>
           <label htmlFor="first_name">First Name:</label>
           <input

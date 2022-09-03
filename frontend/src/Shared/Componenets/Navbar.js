@@ -1,7 +1,12 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { logoutUser } from "../../Features/User/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  console.log(user);
   return (
     <Wrapper>
       <NavLink
@@ -28,14 +33,16 @@ const Navbar = () => {
       >
         Login
       </NavLink>
-      <NavLink
-        to="logout"
-        style={({ isActive }) => {
-          return { color: isActive ? "white" : "grey" };
-        }}
-      >
-        Logout
-      </NavLink>
+      {user?.email && (
+        <Link
+          to="/"
+          onClick={() => {
+            dispatch(logoutUser());
+          }}
+        >
+          Logout
+        </Link>
+      )}
     </Wrapper>
   );
 };

@@ -28,6 +28,13 @@ const Form = styled.form`
   input:focus {
     outline: none;
   }
+  .form-error-msg {
+    width: 50%;
+    padding: 0.25rem;
+    color: #d2464f;
+    margin: 10px auto;
+    background-color: #e6989d;
+  }
   p {
     text-align: center;
     margin-top: 10px;
