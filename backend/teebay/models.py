@@ -1,4 +1,3 @@
-from enum import unique
 from teebay import db
 from datetime import datetime
 class User(db.Model):
@@ -10,7 +9,7 @@ class User(db.Model):
     email = db.Column(db.String(100),nullable=False,unique=True)
     phoneNumber = db.Column(db.String(11))
     password = db.Column(db.String(100),nullable=False)
-
+    products = db.relationship('Product',backref="user")
 
     def __repr__(self):
         return f'{self.email}'
@@ -20,9 +19,11 @@ class Product(db.Model):
     title = db.Column(db.String(200),unique=True)
     categories = db.Column(db.String(100),nullable=False)
     description = db.Column(db.Text)
+    createdAt = db.Column(db.DateTime,default=datetime.utcnow)
     price = db.Column(db.Float,nullable=False)
     rentPrice = db.Column(db.Float,nullable=False)
     rentType = db.Column(db.String(20),nullable=False)
+    userId = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
 
     def __repr__(self):
         return f'{self.title}'
