@@ -1,12 +1,10 @@
 import "./App.css";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage/HomePage";
 import SignUpPage from "./Pages/SignUpPage/SignUpPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import Navbar from "./Shared/Componenets/Navbar";
-import axios from "axios";
+import AddProductPage from "./Pages/AddProductPage/AddProductPage";
 function App() {
   return (
     <div>
@@ -16,6 +14,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="sign-up" element={<SignUpPage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="add-product" element={<AddProductPage />} />
         </Routes>
       </BrowserRouter>
     </div>

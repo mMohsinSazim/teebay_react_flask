@@ -100,7 +100,8 @@ const SignUpPage = () => {
     } else {
       const registeredUser = { email: data.email, password: data.password };
       const loginUser = await axios.post("/api/user/login", registeredUser);
-      dispatch(setUserInfoOnStore(loginUser.data));
+      localStorage.setItem("user", JSON.stringify(loginUser.data));
+      dispatch(setUserInfoOnStore());
       navigate("/");
     }
   };

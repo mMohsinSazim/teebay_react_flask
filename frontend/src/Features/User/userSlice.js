@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const userInfo = localStorage.getItem("user")
+  ? JSON.parse(localStorage.getItem("user"))
+  : null;
 const initialState = {
-  isLoggedIn: false,
-  user: {},
+  user: userInfo,
   isError: false,
   errorMessage: "",
 };
@@ -16,15 +18,12 @@ const userSlice = createSlice({
       state.isError = type;
       state.errorMessage = msg;
     },
-    setUserInfoOnStore: (state, action) => {
-      state.isLoggedIn = true;
-      state.user = action.payload;
-      localStorage.setItem("user", JSON.stringify(state.user));
+    setUserInfoOnStore: (state) => {
+      state.user = JSON.parse(localStorage.getItem("user"));
     },
     logoutUser: (state) => {
-      state.isLoggedIn = false;
-      state.user = {};
       localStorage.removeItem("user");
+      state.user = {};
     },
   },
 });

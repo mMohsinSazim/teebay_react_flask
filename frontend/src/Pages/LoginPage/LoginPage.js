@@ -34,7 +34,8 @@ const LoginPage = () => {
       }, 2000);
       return;
     }
-    dispatch(setUserInfoOnStore(loginUser.data));
+    localStorage.setItem("user", JSON.stringify(loginUser.data));
+    dispatch(setUserInfoOnStore());
     navigate("/");
   };
   return (
