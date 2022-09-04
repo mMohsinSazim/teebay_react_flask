@@ -37,7 +37,7 @@ const Navbar = () => {
           </NavLink>
         </>
       )}
-      {user && (
+      {user !== null && (
         <>
           <NavLink
             to="/add-product"
