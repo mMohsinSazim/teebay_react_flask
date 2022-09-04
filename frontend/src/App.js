@@ -5,6 +5,7 @@ import SignUpPage from "./Pages/SignUpPage/SignUpPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import Navbar from "./Shared/Componenets/Navbar";
 import AddProductPage from "./Pages/AddProductPage/AddProductPage";
+import UpdateProductPage from "./Pages/UpdateProductPage/UpdateProductPage";
 function App() {
   return (
     <div>
@@ -15,6 +16,10 @@ function App() {
           <Route path="sign-up" element={<SignUpPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="add-product" element={<AddProductPage />} />
+          <Route
+            path="update-product/:productId"
+            element={<UpdateProductPage />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

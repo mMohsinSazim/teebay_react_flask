@@ -6,21 +6,35 @@ import axios from "axios";
 import styled from "styled-components";
 const HomePage = () => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useSelector((state) => state.user);
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
-      const allProducts = await axios.get("/api/products", {
-        headers: {
-          "Content-Type": "application/json",
-          Bearer: `${user.token}`,
-        },
-      });
-      console.log(allProducts);
-      setProducts(allProducts.data.data);
+      try {
+        setIsLoading(true);
+        const allProducts = await axios.get("/api/products", {
+          headers: {
+            "Content-Type": "application/json",
+            Bearer: `${user.token}`,
+          },
+        });
+        setProducts(allProducts.data.data);
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        console.log(err);
+      }
     };
     getProducts();
   }, []);
+  if (isLoading) {
+    return (
+      <div>
+        <h1>Loading....</h1>
+      </div>
+    );
+  }
   if (user == null) {
     return (
       <div>
@@ -51,7 +65,9 @@ const HomePage = () => {
             <p>Rent Price:{singleProduct.rentPrice}</p>
             <p>Rent Type:{singleProduct.rentType}</p>
             <ButtonContainer>
-              <button>Update</button>
+              <Link to={`/update-product/${singleProduct.id}`}>
+                <button>Update</button>
+              </Link>
               <button>Delete</button>
             </ButtonContainer>
           </ProductWrapper>

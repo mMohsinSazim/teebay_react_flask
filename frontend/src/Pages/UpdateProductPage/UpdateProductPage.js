@@ -1,13 +1,15 @@
+import React from "react";
 import Form from "../../Shared/Componenets/Form";
-import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { FormButton } from "../../Shared/Componenets/Button";
-import { useSelector } from "react-redux";
-
-const AddProductPage = () => {
-  const { user } = useSelector((state) => state.user);
+function UpdateProductPage() {
   const navigate = useNavigate();
+  const { productId } = useParams();
+  const { user } = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(false);
   const [productInfo, setProductInfo] = useState({
     title: "",
     categories: "",
@@ -16,18 +18,41 @@ const AddProductPage = () => {
     rentPrice: 0,
     rentType: "",
   });
+  useEffect(() => {
+    axios
+      .get(`/api/product/${productId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Bearer: `${user.token}`,
+        },
+      })
+      .then((response) => {
+        let product = response.data.data;
+        product.categories = product.categories.split(",");
+        setProductInfo(product);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     productInfo.categories = productInfo.categories.join(",");
-    console.log(productInfo);
-    const addProduct = await axios.post("/api/products", productInfo, {
-      headers: {
-        "Content-Type": "application/json",
-        Bearer: `${JSON.parse(localStorage.getItem("user")).token}`,
-      },
-    });
-    console.log(addProduct.data);
-    navigate("/");
+    try {
+      const response = await axios.put(
+        `/api/product/${productId}`,
+        productInfo,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Bearer: `${user.token}`,
+          },
+        }
+      );
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleCategory = (e) => {
     const selected = [];
@@ -36,8 +61,15 @@ const AddProductPage = () => {
     }
     setProductInfo({ ...productInfo, categories: selected });
   };
+  if (isLoading) {
+    return (
+      <div>
+        <h1>Loading....</h1>
+      </div>
+    );
+  }
   return (
-    <>
+    <div>
       <Form>
         <h3>Add Product</h3>
         <div>
@@ -53,7 +85,13 @@ const AddProductPage = () => {
         </div>
         <div>
           <label htmlFor="categories">Categories:</label>
-          <select name="cars" id="cars" multiple onChange={handleCategory}>
+          <select
+            name="cars"
+            id="cars"
+            multiple
+            value={productInfo.categories ? productInfo.categories : []}
+            onChange={handleCategory}
+          >
             <option value="Electronics">Electronics</option>
             <option value="Home Appliances">Home Appliances</option>
             <option value="Toy">Toy</option>
@@ -110,11 +148,11 @@ const AddProductPage = () => {
           </select>
         </div>
         <FormButton type="submit" onClick={handleSubmit}>
-          Add
+          Update
         </FormButton>
       </Form>
-    </>
+    </div>
   );
-};
+}
 
-export default AddProductPage;
+export default UpdateProductPage;

@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  console.log(user);
   return (
     <Wrapper>
       <NavLink
