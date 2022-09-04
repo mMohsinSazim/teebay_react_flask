@@ -7,6 +7,7 @@ import styled from "styled-components";
 const HomePage = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const { user } = useSelector((state) => state.user);
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -27,7 +28,23 @@ const HomePage = () => {
       }
     };
     getProducts();
-  }, []);
+  }, [isDelete]);
+  const handleDelete = (id) => {
+    axios
+      .delete(`/api/product/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Bearer: `${user.token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setIsDelete(true);
+  };
   if (isLoading) {
     return (
       <div>
@@ -68,7 +85,9 @@ const HomePage = () => {
               <Link to={`/update-product/${singleProduct.id}`}>
                 <button>Update</button>
               </Link>
-              <button>Delete</button>
+              <button onClick={() => handleDelete(singleProduct.id)}>
+                Delete
+              </button>
             </ButtonContainer>
           </ProductWrapper>
         );
