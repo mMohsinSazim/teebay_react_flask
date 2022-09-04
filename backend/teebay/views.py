@@ -30,6 +30,7 @@ def getAddProduct(loginUser,*args,**kwargs):
     allProducts = []
     for product in products:
         singleProduct = {}
+        singleProduct['id'] = product.id
         singleProduct['title'] = product.title
         singleProduct['categories'] = product.categories
         singleProduct['description'] = product.description
@@ -47,6 +48,7 @@ def getUpdateDeleteProduct(loginUser,productId,*args,**kwargs,):
         return jsonify({"message":"Unauthorized user"})
     if request.method == "GET":
         singleProduct = {}
+        singleProduct["id"] = product.id
         singleProduct['title'] = product.title
         singleProduct['categories'] = product.categories
         singleProduct['description'] = product.description
