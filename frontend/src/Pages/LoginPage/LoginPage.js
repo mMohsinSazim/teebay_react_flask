@@ -6,11 +6,12 @@ import { FormButton } from "../../Shared/Componenets/Button";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
+  logoutUser,
   setErrorStatus,
   setUserInfoOnStore,
 } from "../../Features/User/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-const LoginPage = () => {
+const LoginPage = ({ user }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isError, errorMessage } = useSelector((state) => state.user);

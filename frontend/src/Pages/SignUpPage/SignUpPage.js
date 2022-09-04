@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Form from "../../Shared/Componenets/Form";
 import { FormButton } from "../../Shared/Componenets/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import {
+  logoutUser,
   setErrorStatus,
   setUserInfoOnStore,
 } from "../../Features/User/userSlice";
