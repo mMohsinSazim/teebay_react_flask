@@ -24,7 +24,6 @@ const HomePage = () => {
         setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
-        console.log(err);
       }
     };
     getProducts();
