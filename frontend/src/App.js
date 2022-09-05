@@ -1,16 +1,17 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
-import HomePage from "./Pages/HomePage/HomePage";
-import SignUpPage from "./Pages/SignUpPage/SignUpPage";
-import LoginPage from "./Pages/LoginPage/LoginPage";
-import Navbar from "./Shared/Componenets/Navbar";
-import AddProductPage from "./Pages/AddProductPage/AddProductPage";
-import UpdateProductPage from "./Pages/UpdateProductPage/UpdateProductPage";
+import { useSelector, useDispatch } from "react-redux";
+import { HomePage } from "./Pages/HomePage";
+import { SignUpPage } from "./Pages/SignUpPage";
+import { LoginPage } from "./Pages/LoginPage";
+import { Navbar } from "./Shared";
+import { AddProductPage } from "./Pages/AddProductPage";
+import { UpdateProductPage } from "./Pages/UpdateProductPage";
 import ProtectedRoutePage from "./Pages/ProtectedRoutePage/ProtectedRoutePage";
 import ProtectedRouteForAuth from "./Pages/ProtectedRoutePage/ProtectedRouteForAuth";
 function App() {
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   return (
     <div>
       <BrowserRouter>

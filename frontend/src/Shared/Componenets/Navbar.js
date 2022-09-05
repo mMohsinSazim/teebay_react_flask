@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { logoutUser } from "../../Features/User/userSlice";
+import { logoutUser } from "../../Slices/User/userSlice";
 import { useSelector, useDispatch } from "react-redux";
-const Navbar = () => {
+export const Navbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   return (
@@ -70,5 +70,3 @@ const Wrapper = styled.nav`
     margin: 0 1rem;
   }
 `;
-
-export default Navbar;

@@ -1,6 +1,5 @@
 import styled from "styled-components";
-
-const Form = styled.form`
+export const Form = styled.form`
   width: 40rem;
   margin: 10px auto;
   border: 1px solid black;
@@ -43,5 +42,3 @@ const Form = styled.form`
     }
   }
 `;
-
-export default Form;

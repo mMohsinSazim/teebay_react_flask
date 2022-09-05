@@ -1,10 +1,9 @@
 import React from "react";
-import Form from "../../Shared/Componenets/Form";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { FormButton } from "../../Shared/Componenets/Button";
+import { Form, FormButton } from "../../../Shared";
 function UpdateProductPage() {
   const navigate = useNavigate();
   const { productId } = useParams();

@@ -1,8 +1,7 @@
-import Form from "../../Shared/Componenets/Form";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { FormButton } from "../../Shared/Componenets/Button";
+import { Form, FormButton } from "../../../Shared";
 import { useSelector } from "react-redux";
 
 const AddProductPage = () => {

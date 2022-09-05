@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-const HomePage = () => {
+import { fetchProducts } from "../Slices/Products/productSlice";
+export const HomePage = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
@@ -117,5 +118,3 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 1rem 0;
 `;
-
-export default HomePage;

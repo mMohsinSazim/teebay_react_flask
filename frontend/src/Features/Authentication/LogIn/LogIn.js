@@ -1,17 +1,15 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
-import Form from "../../Shared/Componenets/Form";
-import { FormButton } from "../../Shared/Componenets/Button";
+import { Form, FormButton } from "../../../Shared";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
-  logoutUser,
   setErrorStatus,
   setUserInfoOnStore,
-} from "../../Features/User/userSlice";
+} from "../../../Slices/User/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-const LoginPage = ({ user }) => {
+const LogIn = ({ user }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isError, errorMessage } = useSelector((state) => state.user);
@@ -79,4 +77,4 @@ const LoginPage = ({ user }) => {
   );
 };
 
-export default LoginPage;
+export default LogIn;

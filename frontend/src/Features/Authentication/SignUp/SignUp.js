@@ -1,16 +1,14 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
-import Form from "../../Shared/Componenets/Form";
-import { FormButton } from "../../Shared/Componenets/Button";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Form, FormButton } from "../../../Shared";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  logoutUser,
   setErrorStatus,
   setUserInfoOnStore,
-} from "../../Features/User/userSlice";
+} from "../../../Slices/User/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-const SignUpPage = () => {
+const SignUp = () => {
   const dispatch = useDispatch();
   const { isError, errorMessage } = useSelector((store) => store.user);
   const navigate = useNavigate();
@@ -199,4 +197,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignUp;
