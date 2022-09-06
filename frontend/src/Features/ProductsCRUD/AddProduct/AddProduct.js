@@ -2,30 +2,70 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Form, FormButton } from "../../../Shared";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setErrorStatus } from "../../../Slices/User/userSlice";
 
 const AddProductPage = () => {
-  const { user } = useSelector((state) => state.user);
+  const { isError, errorMessage } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [productInfo, setProductInfo] = useState({
     title: "",
     categories: "",
     description: "",
     price: 0,
     rentPrice: 0,
-    rentType: "",
+    rentType: "Per Day",
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (parseInt(productInfo.rentPrice) >= parseInt(productInfo.price)) {
+      dispatch(
+        setErrorStatus({
+          type: true,
+          msg: "Check the rent price and selling price",
+        })
+      );
+      setTimeout(() => {
+        dispatch(
+          setErrorStatus({
+            type: false,
+            msg: null,
+          })
+        );
+      }, 2000);
+      return;
+    }
+    if (
+      productInfo.title == "" ||
+      productInfo.categories.length == 0 ||
+      productInfo.rentType == "" ||
+      productInfo.price == 0 ||
+      productInfo.rentPrice == 0
+    ) {
+      dispatch(
+        setErrorStatus({
+          type: true,
+          msg: "Title,Price, Rent Price, Categories, Rent Type Must be Provided ",
+        })
+      );
+      setTimeout(() => {
+        dispatch(
+          setErrorStatus({
+            type: false,
+            msg: null,
+          })
+        );
+      }, 2000);
+      return;
+    }
     productInfo.categories = productInfo.categories.join(",");
-    console.log(productInfo);
-    const addProduct = await axios.post("/api/products", productInfo, {
+    await axios.post("/api/products", productInfo, {
       headers: {
         "Content-Type": "application/json",
         Bearer: `${JSON.parse(localStorage.getItem("user")).token}`,
       },
     });
-    console.log(addProduct.data);
     navigate("/");
   };
   const handleCategory = (e) => {
@@ -38,6 +78,7 @@ const AddProductPage = () => {
   return (
     <>
       <Form>
+        {isError && <p className="form-error-msg">{errorMessage}</p>}
         <h3>Add Product</h3>
         <div>
           <label htmlFor="title">Title:</label>
@@ -52,7 +93,13 @@ const AddProductPage = () => {
         </div>
         <div>
           <label htmlFor="categories">Categories:</label>
-          <select name="cars" id="cars" multiple onChange={handleCategory}>
+          <select
+            name="cars"
+            id="cars"
+            multiple
+            required
+            onChange={handleCategory}
+          >
             <option value="Electronics">Electronics</option>
             <option value="Home Appliances">Home Appliances</option>
             <option value="Toy">Toy</option>
@@ -100,6 +147,7 @@ const AddProductPage = () => {
           <select
             name="cars"
             id="cars"
+            required
             onChange={(e) =>
               setProductInfo({ ...productInfo, rentType: e.target.value })
             }

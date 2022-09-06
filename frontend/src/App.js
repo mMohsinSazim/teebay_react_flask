@@ -1,17 +1,17 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { HomePage } from "./Pages/HomePage";
 import { SignUpPage } from "./Pages/SignUpPage";
 import { LoginPage } from "./Pages/LoginPage";
 import { Navbar } from "./Shared";
 import { AddProductPage } from "./Pages/AddProductPage";
 import { UpdateProductPage } from "./Pages/UpdateProductPage";
+import Error from "./Pages/Error";
 import ProtectedRoutePage from "./Pages/ProtectedRoutePage/ProtectedRoutePage";
 import ProtectedRouteForAuth from "./Pages/ProtectedRoutePage/ProtectedRouteForAuth";
 function App() {
   const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
   return (
     <div>
       <BrowserRouter>
@@ -50,6 +50,7 @@ function App() {
               </ProtectedRoutePage>
             }
           />
+          <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
     </div>
